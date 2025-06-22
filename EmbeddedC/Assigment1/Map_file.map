@@ -1,0 +1,109 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x00000000         0x04000000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00010000                        . = 0x10000
+
+.startup        0x00010000       0x10
+ startup.o(.text)
+ .text          0x00010000       0x10 startup.o
+                0x00010000                reset
+
+.text           0x00010010       0x78
+ *(.text)
+ .text          0x00010010       0x58 Uart.o
+                0x00010010                UART_SEND_DATA
+ .text          0x00010068       0x20 app.o
+                0x00010068                main
+ *(.rodata)
+
+.glue_7         0x00010088        0x0
+ .glue_7        0x00010088        0x0 linker stubs
+
+.glue_7t        0x00010088        0x0
+ .glue_7t       0x00010088        0x0 linker stubs
+
+.vfp11_veneer   0x00010088        0x0
+ .vfp11_veneer  0x00010088        0x0 linker stubs
+
+.v4_bx          0x00010088        0x0
+ .v4_bx         0x00010088        0x0 linker stubs
+
+.iplt           0x00010088        0x0
+ .iplt          0x00010088        0x0 startup.o
+
+.rel.dyn        0x00010088        0x0
+ .rel.iplt      0x00010088        0x0 startup.o
+
+.data           0x00010088       0x32
+ *(.data)
+ .data          0x00010088        0x0 startup.o
+ .data          0x00010088        0x0 Uart.o
+ .data          0x00010088       0x32 app.o
+                0x00010088                string_buffer
+
+.igot.plt       0x000100bc        0x0
+ .igot.plt      0x000100bc        0x0 startup.o
+
+.bss            0x000100ba        0x1
+ *(.bss)
+ .bss           0x000100ba        0x0 startup.o
+ .bss           0x000100ba        0x0 Uart.o
+ .bss           0x000100ba        0x1 app.o
+                0x000100ba                sting
+ *(COMMON)
+                0x000110bb                        . = (. + 0x1000)
+                0x000110bb                        stack_top = .
+LOAD startup.o
+LOAD Uart.o
+LOAD app.o
+OUTPUT(Project.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x22 startup.o
+ .ARM.attributes
+                0x00000022       0x2c Uart.o
+ .ARM.attributes
+                0x0000004e       0x2c app.o
+
+.comment        0x00000000       0x45
+ .comment       0x00000000       0x45 Uart.o
+                                 0x46 (size before relaxing)
+ .comment       0x00000045       0x46 app.o
+
+.debug_info     0x00000000       0xf4
+ .debug_info    0x00000000       0x5a Uart.o
+ .debug_info    0x0000005a       0x9a app.o
+
+.debug_abbrev   0x00000000       0xe3
+ .debug_abbrev  0x00000000       0x54 Uart.o
+ .debug_abbrev  0x00000054       0x8f app.o
+
+.debug_aranges  0x00000000       0x40
+ .debug_aranges
+                0x00000000       0x20 Uart.o
+ .debug_aranges
+                0x00000020       0x20 app.o
+
+.debug_line     0x00000000       0x93
+ .debug_line    0x00000000       0x4e Uart.o
+ .debug_line    0x0000004e       0x45 app.o
+
+.debug_str      0x00000000      0x10f
+ .debug_str     0x00000000      0x10f Uart.o
+                                 0xe3 (size before relaxing)
+ .debug_str     0x0000010f       0xfc app.o
+
+.debug_frame    0x00000000       0x5c
+ .debug_frame   0x00000000       0x30 Uart.o
+ .debug_frame   0x00000030       0x2c app.o

@@ -1,0 +1,2 @@
+ arm-none-eabi-gcc.exe -c -g -I. -mcpu=arm926ej-s app.c -o app.o
+ arm-none-eabi-gcc.exe -c -g -I. -mcpu=arm926ej-s Uart.c -o Uart.o//
